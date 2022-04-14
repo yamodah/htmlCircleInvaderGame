@@ -39,6 +39,7 @@ class Projectile {
     this.y += this.velocity.y;
   }
 }
+const friction = 0.99;
 class Particles {
   constructor(x, y, radius, color, velocity) {
     this.x = x;
@@ -59,6 +60,8 @@ class Particles {
   }
   update() {
     this.draw();
+    this.velocity.x *= friction;
+    this.velocity.y *= friction;
     this.x += this.velocity.x;
     this.y += this.velocity.y;
     this.alpha -= 0.01;
@@ -121,6 +124,7 @@ function animate() {
   ctx.fillStyle = "rgba(0,0,0,0.1)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   player.draw();
+  //particle fade out
   particles.forEach((particle, index) => {
     if (particle.alpha <= 0) {
       particles.slice(index, 1);
@@ -159,12 +163,19 @@ function animate() {
 
       //remove projectile if it touhces enemy
       if (distance - enemy.radius - projectile.radius < 1) {
-        for (let i = 0; i < 8; i++) {
+        //partilce explosion
+        for (let i = 0; i < enemy.radius * 2; i++) {
           particles.push(
-            new Particles(projectile.x, projectile.y, 2, enemy.color, {
-              x: Math.random() - 0.5,
-              y: Math.random() - 0.5,
-            })
+            new Particles(
+              projectile.x,
+              projectile.y,
+              Math.random() * 2,
+              enemy.color,
+              {
+                x: (Math.random() - 0.5) * (Math.random() * 6),
+                y: (Math.random() - 0.5) * (Math.random() * 6),
+              }
+            )
           );
         }
         if (enemy.radius - 10 > 5) {
