@@ -6,8 +6,11 @@ canvas.height = innerHeight;
 
 const scoreElement = document.querySelector("#score");
 const accuracyElement = document.querySelector("#accuracy");
-const startGameButton = document.querySelector("#startGameButton")
-const modalElement = document.querySelector("#modal")
+const startGameButton = document.querySelector("#startGameButton");
+const modalElement = document.querySelector("#modal");
+const modalScore = document.querySelector("#modal-score");
+const modalAccuracy = document.querySelector("#modal-accuracy");
+
 class Player {
   constructor(x, y, radius, color) {
     this.x = x;
@@ -94,12 +97,25 @@ class Enemy {
 
 const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
-const player = new Player(centerX, centerY, 30, "white");
+let player = new Player(centerX, centerY, 30, "white");
 
-const projectiles = [];
-const enemies = [];
-const particles = [];
-
+let projectiles = [];
+let enemies = [];
+let particles = [];
+function init() {
+  player = new Player(centerX, centerY, 30, "white");
+  projectiles = [];
+  enemies = [];
+  particles = [];
+  score = 0;
+  projectilesCreated = 0;
+  hitCount = 0;
+  accuracy = 0;
+  scoreElement.innerHTML = score;
+  modalScore.innerHTML = score;
+  accuracyElement.innerHTML = accuracy;
+  modalAccuracy.innerHTML = accuracy;
+}
 function spawnEnemies() {
   setInterval(() => {
     const radius = Math.random() * (30 - 4) + 4;
@@ -125,7 +141,7 @@ function spawnEnemies() {
 let score = 0;
 let projectilesCreated = 0;
 let hitCount = 0;
-
+let accuracy;
 
 let animationId;
 function animate() {
@@ -163,6 +179,9 @@ function animate() {
     //if enemy touches player end game
     if (distance - enemy.radius - player.radius < 1) {
       cancelAnimationFrame(animationId);
+      modalScore.innerHTML = score;
+      modalAccuracy.innerHTML = `${accuracy}%`;
+      modalElement.style.display = "flex";
     }
     projectiles.forEach((projectile, projectileIndex) => {
       const distance = Math.hypot(
@@ -173,9 +192,8 @@ function animate() {
       //remove projectile if it touches enemy
       if (distance - enemy.radius - projectile.radius < 1) {
         hitCount++;
-        accuracyElement.innerHTML = `${Math.floor(
-          (hitCount / projectilesCreated) * 100
-        )}%`;
+        accuracy = Math.floor((hitCount / projectilesCreated) * 100);
+        accuracyElement.innerHTML = `${accuracy}%`;
         //partilce explosion
         for (let i = 0; i < enemy.radius * 2; i++) {
           particles.push(
@@ -227,8 +245,9 @@ addEventListener("click", (e) => {
   );
   projectilesCreated++;
 });
-startGameButton.addEventListener("click",()=>{
-    animate();
-    spawnEnemies();
-    modalElement.style.display = "none"
-})
+startGameButton.addEventListener("click", () => {
+  init();
+  animate();
+  spawnEnemies();
+  modalElement.style.display = "none";
+});
