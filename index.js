@@ -137,7 +137,20 @@ function spawnEnemies() {
     enemies.push(new Enemy(x, y, radius, color, velocity));
   }, 1000);
 }
-
+function fireProjectiles(e){
+    const angle = Math.atan2(
+        e.clientY - canvas.height / 2,
+        e.clientX - canvas.width / 2
+      );
+      const velocity = {
+        x: Math.cos(angle) * 5,
+        y: Math.sin(angle) * 5,
+      };
+      projectiles.push(
+        new Projectile(canvas.width / 2, canvas.height / 2, 5, "white", velocity)
+      );
+      projectilesCreated++;
+}
 let score = 0;
 let projectilesCreated = 0;
 let hitCount = 0;
@@ -233,18 +246,7 @@ function animate() {
 }
 
 addEventListener("click", (e) => {
-  const angle = Math.atan2(
-    e.clientY - canvas.height / 2,
-    e.clientX - canvas.width / 2
-  );
-  const velocity = {
-    x: Math.cos(angle) * 5,
-    y: Math.sin(angle) * 5,
-  };
-  projectiles.push(
-    new Projectile(canvas.width / 2, canvas.height / 2, 5, "white", velocity)
-  );
-  projectilesCreated++;
+  fireProjectiles(e)
 });
 startGameButton.addEventListener("click", () => {
   init();
