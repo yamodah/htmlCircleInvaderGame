@@ -18,6 +18,7 @@ class Player {
     ctx.fill();
   }
 }
+
 class Projectile {
   constructor(x, y, radius, color, velocity) {
     this.x = x;
@@ -32,13 +33,34 @@ class Projectile {
     ctx.fillStyle = this.color;
     ctx.fill();
   }
+  update() {
+    this.draw()
+    this.x += this.velocity.x;
+    this.y += this.velocity.y;
+  }
 }
+
 const centerX = canvas.width / 2;
 const centerY = canvas.height / 2;
 const player = new Player(centerX, centerY, 30, "red");
+
+const projectiles = []
 player.draw();
 
+function animate() {
+  requestAnimationFrame(animate);
+  projectiles.forEach((projectile)=>{
+      projectiles.update()
+  })
+}
+
 addEventListener("click", (e) => {
-  const projectile = new Projectile(e.clientX, e.clientY, 5, "green", null);
-  projectile.draw();
+    const angle = Math.atan2(e.clientY-centerY, e.clientX-centerX)
+    projectiles.push(new Projectile(centerX,centerY,5, "green",{
+        x:1,
+        y:1
+    }))
+
 });
+
+animate();
