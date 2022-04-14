@@ -137,19 +137,19 @@ function spawnEnemies() {
     enemies.push(new Enemy(x, y, radius, color, velocity));
   }, 1000);
 }
-function fireProjectiles(e){
-    const angle = Math.atan2(
-        e.clientY - canvas.height / 2,
-        e.clientX - canvas.width / 2
-      );
-      const velocity = {
-        x: Math.cos(angle) * 5,
-        y: Math.sin(angle) * 5,
-      };
-      projectiles.push(
-        new Projectile(canvas.width / 2, canvas.height / 2, 5, "white", velocity)
-      );
-      projectilesCreated++;
+function fireProjectiles(e) {
+  const angle = Math.atan2(
+    e.clientY - canvas.height / 2,
+    e.clientX - canvas.width / 2
+  );
+  const velocity = {
+    x: Math.cos(angle) * 5,
+    y: Math.sin(angle) * 5,
+  };
+  projectiles.push(
+    new Projectile(canvas.width / 2, canvas.height / 2, 5, "white", velocity)
+  );
+  projectilesCreated++;
 }
 let score = 0;
 let projectilesCreated = 0;
@@ -195,7 +195,7 @@ function animate() {
       modalScore.innerHTML = score;
       modalAccuracy.innerHTML = `${accuracy}%`;
       modalElement.style.display = "flex";
-      startGameButton.innerHTML = "Restart Game"
+      startGameButton.innerHTML = "Restart Game";
     }
     projectiles.forEach((projectile, projectileIndex) => {
       const distance = Math.hypot(
@@ -246,7 +246,10 @@ function animate() {
 }
 
 addEventListener("click", (e) => {
-  fireProjectiles(e)
+  fireProjectiles(e);
+});
+addEventListener("touchstart", () => {
+  fireProjectiles(e);
 });
 startGameButton.addEventListener("click", () => {
   init();
