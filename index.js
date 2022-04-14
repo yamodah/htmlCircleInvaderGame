@@ -74,7 +74,6 @@ function spawnEnemies() {
     if (Math.random() < 0.5) {
       x = Math.random() < 0.5 ? 0 - radius : canvas.width + radius;
       y = Math.random() * canvas.height;
-      //  y = Math.random() < 0.5 ? 0 - radius : canvas.height + radius;
     } else {
       x = Math.random() * canvas.width;
       y = Math.random() < 0.5 ? 0 - radius : canvas.height + radius;
@@ -126,19 +125,17 @@ function animate() {
 
       //remove projectile if it touhces enemy
       if (distance - enemy.radius - projectile.radius < 1) {
-          
-          if(enemy.radius-10 >10){
-              enemy.radius-=10
-              setTimeout(() => {
-                projectiles.splice(projectileIndex, 1);
-              }, 0);
-          }else{
-            setTimeout(() => {
-                enemies.splice(enemyIndex, 1);
-                projectiles.splice(projectileIndex, 1);
-              }, 0);
-          }
-        
+        if (enemy.radius - 10 > 5) {
+          gsap.to(enemy, { radius: enemy.radius - 10 });
+          setTimeout(() => {
+            projectiles.splice(projectileIndex, 1);
+          }, 0);
+        } else {
+          setTimeout(() => {
+            enemies.splice(enemyIndex, 1);
+            projectiles.splice(projectileIndex, 1);
+          }, 0);
+        }
       }
     });
   });
