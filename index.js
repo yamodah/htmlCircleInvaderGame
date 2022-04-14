@@ -7,6 +7,7 @@ canvas.height = innerHeight;
 const scoreElement = document.querySelector("#score");
 const accuracyElement = document.querySelector("#accuracy");
 const startGameButton = document.querySelector("#startGameButton")
+const modalElement = document.querySelector("#modal")
 class Player {
   constructor(x, y, radius, color) {
     this.x = x;
@@ -229,4 +230,5 @@ addEventListener("click", (e) => {
 startGameButton.addEventListener("click",()=>{
     animate();
     spawnEnemies();
+    modalElement.style.display = "none"
 })

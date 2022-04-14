@@ -9,11 +9,12 @@
     <style>
       body {
         margin: 0;
+        background-color: black;
       }
     </style>
   </head>
   <body>
-    <div class="flex flex-col fixed">
+    <div class="flex flex-col fixed ">
       <div class="text-white text-sm ml-2 mt-1 select-none">
         <span>Score: </span><span id="score">0</span>
       </div>
@@ -21,8 +22,8 @@
         <span>Accuracy: </span><span id="accuracy">0%</span>
       </div>
     </div>
-    <div>
-      <div class="flex fixed items-center inset-0 justify-center">
+    <div  >
+      <div class="flex fixed items-center inset-0 justify-center" id="modal">
         <div class="bg-white flex flex-col max-w-sm w-full  p-5 space-y-5 justify-center items-center rounded-lg">  
         <div class="flex flex-row space-x-5 justify-center text-center">
             <div class="mx-1">
