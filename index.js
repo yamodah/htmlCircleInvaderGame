@@ -6,7 +6,7 @@ canvas.height = innerHeight;
 
 const scoreElement = document.querySelector("#score");
 const accuracyElement = document.querySelector("#accuracy");
-
+const startGameButton = document.querySelector("#startGameButton")
 class Player {
   constructor(x, y, radius, color) {
     this.x = x;
@@ -226,6 +226,7 @@ addEventListener("click", (e) => {
   );
   projectilesCreated++;
 });
-
-animate();
-spawnEnemies();
+startGameButton.addEventListener("click",()=>{
+    animate();
+    spawnEnemies();
+})
