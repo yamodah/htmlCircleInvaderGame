@@ -113,6 +113,8 @@ function animate() {
   enemies.forEach((enemy, enemyIndex) => {
     enemy.update();
     const distance = Math.hypot(player.x - enemy.x, player.y - enemy.y);
+
+    //if enemy touches player end game
     if (distance - enemy.radius - player.radius < 1) {
       cancelAnimationFrame(animationId);
     }
@@ -121,11 +123,22 @@ function animate() {
         projectile.x - enemy.x,
         projectile.y - enemy.y
       );
+
+      //remove projectile if it touhces enemy
       if (distance - enemy.radius - projectile.radius < 1) {
-        setTimeout(() => {
-          enemies.splice(enemyIndex, 1);
-          projectiles.splice(projectileIndex, 1);
-        }, 0);
+          
+          if(enemy.radius-10 >10){
+              enemy.radius-=10
+              setTimeout(() => {
+                projectiles.splice(projectileIndex, 1);
+              }, 0);
+          }else{
+            setTimeout(() => {
+                enemies.splice(enemyIndex, 1);
+                projectiles.splice(projectileIndex, 1);
+              }, 0);
+          }
+        
       }
     });
   });
@@ -147,4 +160,4 @@ addEventListener("click", (e) => {
 });
 
 animate();
-// spawnEnemies();
+spawnEnemies();
