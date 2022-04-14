@@ -14,9 +14,12 @@ class Player {
   draw() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+    ctx.fillStyle = this.color;
     ctx.fill();
   }
 }
-const player = new Player(100, 100, 30, "red");
+const centerX = canvas.width/2
+const centerY = canvas.height/2
+const player = new Player(centerX, centerY, 30, "red");
 player.draw();
 console.log(player);
