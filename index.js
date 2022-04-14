@@ -39,6 +39,31 @@ class Projectile {
     this.y += this.velocity.y;
   }
 }
+class Particles {
+  constructor(x, y, radius, color, velocity) {
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.color = color;
+    this.velocity = velocity;
+    this.alpha = 1;
+  }
+  draw() {
+    ctx.save();
+    ctx.globalAlpha = this.alpha;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+    ctx.restore();
+  }
+  update() {
+    this.draw();
+    this.x += this.velocity.x;
+    this.y += this.velocity.y;
+    this.alpha -= 0.01;
+  }
+}
 class Enemy {
   constructor(x, y, radius, color, velocity) {
     this.x = x;
@@ -66,6 +91,8 @@ const player = new Player(centerX, centerY, 30, "white");
 
 const projectiles = [];
 const enemies = [];
+const particles = [];
+
 function spawnEnemies() {
   setInterval(() => {
     const radius = Math.random() * (30 - 4) + 4;
@@ -94,6 +121,13 @@ function animate() {
   ctx.fillStyle = "rgba(0,0,0,0.1)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   player.draw();
+  particles.forEach((particle, index) => {
+    if (particle.alpha <= 0) {
+      particles.slice(index, 1);
+    } else {
+      particle.update();
+    }
+  });
   projectiles.forEach((projectile, index) => {
     projectile.update();
     //removing off screen projectiles
@@ -125,6 +159,14 @@ function animate() {
 
       //remove projectile if it touhces enemy
       if (distance - enemy.radius - projectile.radius < 1) {
+        for (let i = 0; i < 8; i++) {
+          particles.push(
+            new Particles(projectile.x, projectile.y, 2, enemy.color, {
+              x: Math.random() - 0.5,
+              y: Math.random() - 0.5,
+            })
+          );
+        }
         if (enemy.radius - 10 > 5) {
           gsap.to(enemy, { radius: enemy.radius - 10 });
           setTimeout(() => {
@@ -142,7 +184,6 @@ function animate() {
 }
 
 addEventListener("click", (e) => {
-  console.log(projectiles);
   const angle = Math.atan2(
     e.clientY - canvas.height / 2,
     e.clientX - canvas.width / 2
