@@ -182,6 +182,7 @@ function animate() {
       modalScore.innerHTML = score;
       modalAccuracy.innerHTML = `${accuracy}%`;
       modalElement.style.display = "flex";
+      startGameButton.innerHTML = "Restart Game"
     }
     projectiles.forEach((projectile, projectileIndex) => {
       const distance = Math.hypot(
@@ -211,7 +212,7 @@ function animate() {
         }
         //shrinking enemy
         if (enemy.radius - 10 > 5) {
-          score += 50;
+          score += 100;
           scoreElement.innerHTML = score;
           gsap.to(enemy, { radius: enemy.radius - 10 });
           setTimeout(() => {
@@ -219,7 +220,7 @@ function animate() {
           }, 0);
         } else {
           //removing enemy
-          score += 100;
+          score += 250;
           scoreElement.innerHTML = score;
           setTimeout(() => {
             enemies.splice(enemyIndex, 1);
