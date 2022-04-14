@@ -95,15 +95,20 @@ function animate() {
   projectiles.forEach((projectile) => {
     projectile.update();
   });
-  enemies.forEach((enemy) => {
+  enemies.forEach((enemy, enemyIndex) => {
     enemy.update();
-    projectiles.forEach((projectile) => {
+    projectiles.forEach((projectile, projectileIndex) => {
       const distance = Math.hypot(
         projectile.x - enemy.x,
         projectile.y - enemy.y
       );
       if(distance - enemy.radius - projectile.radius < 1){
-          
+          //prevents flashing by pushing removal to the next frame
+          setTimeout(()=>{
+              enemies.splice(enemyIndex,1)
+              projectile.splice(projectileIndex,1)
+
+          },0)
       }
     });
   });
