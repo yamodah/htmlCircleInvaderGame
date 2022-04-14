@@ -248,7 +248,7 @@ function animate() {
 addEventListener("click", (e) => {
   fireProjectiles(e);
 });
-addEventListener("touchstart", () => {
+addEventListener("touchstart", (e) => {
   fireProjectiles(e);
 });
 startGameButton.addEventListener("click", () => {
