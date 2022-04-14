@@ -153,8 +153,8 @@ function fireProjectiles(e) {
 }
 function fireProjectilesMobile(e){
     const angle = Math.atan2(
-        e.touches[0].pageX - canvas.height / 2,
-        e.touches[0].pageY - canvas.width / 2
+        e.touches[0].pageY - canvas.height / 2,
+        e.touches[0].pageX - canvas.width / 2
       );
       const velocity = {
         x: Math.cos(angle) * 5,
