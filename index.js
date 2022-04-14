@@ -68,10 +68,18 @@ const projectiles = [];
 const enemies = [];
 function spawnEnemies() {
   setInterval(() => {
-    const x = Math.random()* canvas.width;
-    const y = Math.random()* canvas.height;
     const radius = 30;
-    const color = "blue";
+    let x 
+    let y 
+    if(Math.random()<0.5){
+         x = Math.random() < 0.5 ? 0 - radius : canvas.width + radius;
+         y = Math.random() * canvas.height
+        //  y = Math.random() < 0.5 ? 0 - radius : canvas.height + radius;
+    }else{
+        x = Math.random() *canvas.width
+        y = Math.random() < 0.5 ? 0 - radius : canvas.height + radius;
+    }
+    const color = "cyan";
     const angle = Math.atan2(centerY - y, centerX - x);
     const velocity = {
       x: Math.cos(angle),
