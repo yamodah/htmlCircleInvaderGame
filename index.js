@@ -151,6 +151,21 @@ function fireProjectiles(e) {
   );
   projectilesCreated++;
 }
+function fireProjectilesMobile(e){
+    const angle = Math.atan2(
+        e.touches[0].pageX - canvas.height / 2,
+        e.touches[0].pageY - canvas.width / 2
+      );
+      const velocity = {
+        x: Math.cos(angle) * 5,
+        y: Math.sin(angle) * 5,
+      };
+      projectiles.push(
+        new Projectile(canvas.width / 2, canvas.height / 2, 5, "white", velocity)
+      );
+      projectilesCreated++;
+}
+
 let score = 0;
 let projectilesCreated = 0;
 let hitCount = 0;
@@ -249,8 +264,9 @@ addEventListener("click", (e) => {
   fireProjectiles(e);
 });
 addEventListener("touchstart", (e) => {
-  fireProjectiles(e);
+  fireProjectilesMobile(e);
 });
+
 startGameButton.addEventListener("click", () => {
   init();
   animate();
