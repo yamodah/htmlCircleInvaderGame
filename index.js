@@ -45,10 +45,11 @@ const centerY = canvas.height / 2;
 const player = new Player(centerX, centerY, 30, "red");
 
 const projectiles = [];
-player.draw();
 
 function animate() {
   requestAnimationFrame(animate);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  player.draw();
   projectiles.forEach((projectile) => {
     projectile.update();
   });
