@@ -68,16 +68,16 @@ const projectiles = [];
 const enemies = [];
 function spawnEnemies() {
   setInterval(() => {
-    const radius = 30;
-    let x 
-    let y 
-    if(Math.random()<0.5){
-         x = Math.random() < 0.5 ? 0 - radius : canvas.width + radius;
-         y = Math.random() * canvas.height
-        //  y = Math.random() < 0.5 ? 0 - radius : canvas.height + radius;
-    }else{
-        x = Math.random() *canvas.width
-        y = Math.random() < 0.5 ? 0 - radius : canvas.height + radius;
+    const radius = Math.random() * (30 - 4) + 4;
+    let x;
+    let y;
+    if (Math.random() < 0.5) {
+      x = Math.random() < 0.5 ? 0 - radius : canvas.width + radius;
+      y = Math.random() * canvas.height;
+      //  y = Math.random() < 0.5 ? 0 - radius : canvas.height + radius;
+    } else {
+      x = Math.random() * canvas.width;
+      y = Math.random() < 0.5 ? 0 - radius : canvas.height + radius;
     }
     const color = "cyan";
     const angle = Math.atan2(centerY - y, centerX - x);
@@ -97,6 +97,15 @@ function animate() {
   });
   enemies.forEach((enemy) => {
     enemy.update();
+    projectiles.forEach((projectile) => {
+      const distance = Math.hypot(
+        projectile.x - enemy.x,
+        projectile.y - enemy.y
+      );
+      if(distance - enemy.radius - projectile.radius < 1){
+          
+      }
+    });
   });
 }
 
