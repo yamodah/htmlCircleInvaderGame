@@ -4,6 +4,9 @@ const ctx = canvas.getContext("2d");
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 
+const scoreElement = document.querySelector("#score");
+const accuracyElement = document.querySelector("#accuracy");
+
 class Player {
   constructor(x, y, radius, color) {
     this.x = x;
@@ -118,6 +121,11 @@ function spawnEnemies() {
   }, 1000);
 }
 
+let score = 0;
+let projectilesCreated = 0;
+let hitCount = 0;
+
+
 let animationId;
 function animate() {
   animationId = requestAnimationFrame(animate);
@@ -161,8 +169,12 @@ function animate() {
         projectile.y - enemy.y
       );
 
-      //remove projectile if it touhces enemy
+      //remove projectile if it touches enemy
       if (distance - enemy.radius - projectile.radius < 1) {
+        hitCount++;
+        accuracyElement.innerHTML = `${Math.floor(
+          (hitCount / projectilesCreated) * 100
+        )}%`;
         //partilce explosion
         for (let i = 0; i < enemy.radius * 2; i++) {
           particles.push(
@@ -178,12 +190,18 @@ function animate() {
             )
           );
         }
+        //shrinking enemy
         if (enemy.radius - 10 > 5) {
+          score += 50;
+          scoreElement.innerHTML = score;
           gsap.to(enemy, { radius: enemy.radius - 10 });
           setTimeout(() => {
             projectiles.splice(projectileIndex, 1);
           }, 0);
         } else {
+          //removing enemy
+          score += 100;
+          scoreElement.innerHTML = score;
           setTimeout(() => {
             enemies.splice(enemyIndex, 1);
             projectiles.splice(projectileIndex, 1);
@@ -206,6 +224,7 @@ addEventListener("click", (e) => {
   projectiles.push(
     new Projectile(canvas.width / 2, canvas.height / 2, 5, "white", velocity)
   );
+  projectilesCreated++;
 });
 
 animate();
