@@ -86,24 +86,33 @@ function spawnEnemies() {
       y: Math.sin(angle),
     };
     enemies.push(new Enemy(x, y, radius, color, velocity));
-  }, 1000);
+  }, 5000);
 }
-let animationId 
+let animationId;
 function animate() {
   animationId = requestAnimationFrame(animate);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   player.draw();
-  projectiles.forEach((projectile) => {
+  projectiles.forEach((projectile, index) => {
     projectile.update();
+    //removing off screen projectiles
+    if (
+      projectile.x + projectile.radius < 0 ||
+      projectile.x - projectile.radius > canvas.width ||
+      projectile.y + projectile.radius < 0 ||
+      projectile.y - projectile.radius > canvas.height
+    ) {
+      //prevents flashing by pushing removal to the next frame
+      setTimeout(() => {
+        projectiles.splice(index, 1);
+      }, 0);
+    }
   });
   enemies.forEach((enemy, enemyIndex) => {
     enemy.update();
-    const distance = Math.hypot(
-        player.x - enemy.x,
-        player.y - enemy.y
-      );
-    if(distance - enemy.radius -player.radius <1){
-        cancelAnimationFrame(animationId)
+    const distance = Math.hypot(player.x - enemy.x, player.y - enemy.y);
+    if (distance - enemy.radius - player.radius < 1) {
+      cancelAnimationFrame(animationId);
     }
     projectiles.forEach((projectile, projectileIndex) => {
       const distance = Math.hypot(
@@ -111,7 +120,6 @@ function animate() {
         projectile.y - enemy.y
       );
       if (distance - enemy.radius - projectile.radius < 1) {
-        //prevents flashing by pushing removal to the next frame
         setTimeout(() => {
           enemies.splice(enemyIndex, 1);
           projectiles.splice(projectileIndex, 1);
@@ -122,12 +130,18 @@ function animate() {
 }
 
 addEventListener("click", (e) => {
-  const angle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
+  console.log(projectiles);
+  const angle = Math.atan2(
+    e.clientY - canvas.height / 2,
+    e.clientX - canvas.width / 2
+  );
   const velocity = {
     x: Math.cos(angle),
     y: Math.sin(angle),
   };
-  projectiles.push(new Projectile(centerX, centerY, 5, "green", velocity));
+  projectiles.push(
+    new Projectile(canvas.width / 2, canvas.height / 2, 5, "green", velocity)
+  );
 });
 
 animate();
