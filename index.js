@@ -18,26 +18,27 @@ class Player {
     ctx.fill();
   }
 }
-class Projectile{
-    constructor(x, y, radius, color, velocity) {
-        this.x = x;
-        this.y = y;
-        this.radius = radius;
-        this.color = color;
-        this.velocity = velocity
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-        ctx.fillStyle = this.color;
-        ctx.fill();
-      }
+class Projectile {
+  constructor(x, y, radius, color, velocity) {
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.color = color;
+    this.velocity = velocity;
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  }
 }
-const centerX = canvas.width/2
-const centerY = canvas.height/2
+const centerX = canvas.width / 2;
+const centerY = canvas.height / 2;
 const player = new Player(centerX, centerY, 30, "red");
 player.draw();
-console.log(player);
-window.addEventListener("click",()=>{
-    
-})
+
+addEventListener("click", (e) => {
+  const projectile = new Projectile(e.clientX, e.clientY, 5, "green", null);
+  projectile.draw();
+});
