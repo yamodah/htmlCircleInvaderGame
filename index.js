@@ -88,8 +88,9 @@ function spawnEnemies() {
     enemies.push(new Enemy(x, y, radius, color, velocity));
   }, 1000);
 }
+let animationId 
 function animate() {
-  requestAnimationFrame(animate);
+  animationId = requestAnimationFrame(animate);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   player.draw();
   projectiles.forEach((projectile) => {
@@ -97,18 +98,24 @@ function animate() {
   });
   enemies.forEach((enemy, enemyIndex) => {
     enemy.update();
+    const distance = Math.hypot(
+        player.x - enemy.x,
+        player.y - enemy.y
+      );
+    if(distance - enemy.radius -player.radius <1){
+        cancelAnimationFrame(animationId)
+    }
     projectiles.forEach((projectile, projectileIndex) => {
       const distance = Math.hypot(
         projectile.x - enemy.x,
         projectile.y - enemy.y
       );
-      if(distance - enemy.radius - projectile.radius < 1){
-          //prevents flashing by pushing removal to the next frame
-          setTimeout(()=>{
-              enemies.splice(enemyIndex,1)
-              projectile.splice(projectileIndex,1)
-
-          },0)
+      if (distance - enemy.radius - projectile.radius < 1) {
+        //prevents flashing by pushing removal to the next frame
+        setTimeout(() => {
+          enemies.splice(enemyIndex, 1);
+          projectiles.splice(projectileIndex, 1);
+        }, 0);
       }
     });
   });
@@ -124,4 +131,4 @@ addEventListener("click", (e) => {
 });
 
 animate();
-// spawnEnemies();
+spawnEnemies();
